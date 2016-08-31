@@ -7,21 +7,30 @@ var QuestionManagementService = function() {
 
   this.add = function(data, callback) {
      var result = {
-       message: 'Question update failure.'
+       message: 'success'
      };
+
      if(validation(data)) {
        var aQuestion = new Question(data);
        aQuestion.save(function(err) {
          if(err) {
-           console.log(err);
-           callback(result);
+           processError(err, callback);
          }
-         result.message = 'Question successfully updated!';
-         return callback(result);
        });
      } else {
        callback(result);
      }
+  };
+
+  this.findQuestion = function (data, callback) {
+    Question.find(data, (err, questions) => {
+      if(err) {
+        processError(err, callback);
+      }
+      if (questions) {
+        callback(JSON.stringify(questions));
+      }
+    });
   };
   
   var validation = function (data) {
@@ -35,6 +44,14 @@ var QuestionManagementService = function() {
     }
     return true;
   };
+
+  var processError = function (err, callback) {
+    var result = {
+      message: 'Something was error.'
+    };
+    console.error(err);
+    callback(result);
+  }
 
 };
 

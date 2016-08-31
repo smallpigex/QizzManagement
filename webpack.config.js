@@ -4,12 +4,16 @@ var webpack = require('webpack');
 var path = require('path');
 
 var config = {
-    entry: ['webpack-dev-server/client?http://127.0.0.1:8080/',
+    entry: ['webpack-dev-server/client?http://127.0.0.1:7070',
             'webpack/hot/only-dev-server',
             './src'],
     output: {
         path: path.resolve(__dirname, 'public'),
         filename: 'bundle.js'
+    },
+    devServer: {
+      host: '127.0.0.1',
+      port: 7070
     },
     resolve: {
       modulesDirectories: ['node_modules', 'src'],
@@ -22,6 +26,10 @@ var config = {
         }]
     },
     plugins: [
+      new webpack.ProvidePlugin({
+        $: "jquery",
+        jQuery: "jquery"
+      }),
       new webpack.HotModuleReplacementPlugin(),
       new webpack.NoErrorsPlugin()
       ]

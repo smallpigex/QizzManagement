@@ -4,14 +4,16 @@
     <option name="serverConfigurations">
       <list>
         <ServerConfiguration>
+          <option name="label" value="User" />
           <option name="serverUrls">
             <list>
               <option value="localhost:27017" />
             </list>
           </option>
+          <option name="userDatabase" value="User" />
         </ServerConfiguration>
       </list>
     </option>
-    <option name="shellPath" value="C:\Program Files (x86)\MongoDB\Server\3.2\bin\mongod.exe" />
+    <option name="shellPath" value="C:\Program Files\MongoDB\Server\3.2\bin\mongod.exe" />
   </component>
 </project>

@@ -7,8 +7,12 @@ export default class ToDosListHeader extends React.Component {
     return (
       <thead>
         <tr>
-          <th>Task</th>
-          <th>Action</th>
+          <th>問題</th>
+          <th>答案</th>
+          <th>正確選項</th>
+          <th>錯誤選項</th>
+          <th>錯誤選項</th>
+          <th>錯誤選項</th>
         </tr>
       </thead>
     );

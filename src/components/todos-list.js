@@ -8,7 +8,6 @@ import _ from 'lodash';
 export default class ToDosList extends React.Component {
   renderItems() {
     const props = _.omit(this.props, 'todos');
-
     var items = this.props.todos.map(function (todo, index) {
       return <ToDosListItem key={index} {...todo} {...props}/>;
     });

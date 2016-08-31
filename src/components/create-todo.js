@@ -5,7 +5,7 @@ import React from 'react';
 export default class ToDosListHeader extends React.Component {
   constructor(props) {
     super(props);
-
+    console.log(props);
     this.state = {
       error: null
     };
@@ -45,7 +45,7 @@ export default class ToDosListHeader extends React.Component {
   validateInput(task) {
     if(!task) {
       return 'Please enter a task.';
-    } else if(_.find(this.props.todos, todos => todos.task === task)) {
+    } else if(_.find(this.props.todos, todos => todos._id === _id)) {
       return 'Task already exists.';
     } else {
       return null;
