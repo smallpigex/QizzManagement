@@ -6,8 +6,8 @@ var readline = require('readline');
 var google = require('googleapis');
 var OAuth2 = google.auth.OAuth2;
 var plus = google.plus('v1');
-var CLIENT_ID = '257483910796-uibo6ms29j4jehojuvdsp4hvv6ils35a.apps.googleusercontent.com',
-  CLIENT_SECRET = 'usErE-3ONmwSybpCrUC73wem',
+var CLIENT_ID = '',
+  CLIENT_SECRET = '',
   REDIRECT_URL = 'http://localhost:8888/api/oauth2callback',
   SCOPE = ['https://www.googleapis.com/auth/drive',
     'https://www.googleapis.com/auth/plus.me',
