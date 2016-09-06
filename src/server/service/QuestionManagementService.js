@@ -2,6 +2,7 @@
  * Created by smallpigex on 2016/7/23.
  */
 const Question = require('../model/Question.js');
+const assert = require('assert');
 
 var QuestionManagementService = function() {
 
@@ -10,15 +11,21 @@ var QuestionManagementService = function() {
        message: 'success'
      };
 
+     if(!data._id) {
+       delete data._id;
+     }
+
      if(validation(data)) {
+       console.log(data);
        var aQuestion = new Question(data);
-       aQuestion.save(function(err) {
+       console.log(aQuestion);
+       aQuestion.save(function (err) {
          if(err) {
-           processError(err, callback);
+          processError(err, callback);
          }
+         callback(result);
        });
-     } else {
-       callback(result);
+       
      }
   };
 

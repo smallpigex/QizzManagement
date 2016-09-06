@@ -22,7 +22,7 @@ app.use(express.static(__dirname + '/public'));
 var router = express.Router();
 
 router.get('/', function (req, res) {
-  console.log(path.join(__dirname, 'index.html'));
+  console.log('');
   res.sendFile(path.join(__dirname, 'index.html'));
 });
 
@@ -42,9 +42,9 @@ router.get('/questions', function (req, res) {
 });
 
 router.post('/add', function (req, res) {
-  res.set('Access-Control-Allow-Origin', 'http://localhost:7070');
+  res.set('Access-Control-Allow-Origin', '*');
   res.set('Access-Control-Allow-Methods', 'POST');
-  res.set('Access-Control-Allow-Headers', 'X-Requested-With, Content-Type, Accept');
+  res.set('Access-Control-Allow-Headers', 'Content-type,Accept,X-Custom-Header');
   console.log(req.body);
   var service = new QuestionService();
   service.add(req.body, function(data) {
@@ -63,7 +63,6 @@ router.get('/oauth2callback', function (req, res) {
   auth.getAccessToken(code);
   res.sendFile(path.join(__dirname, 'index.html'));
 });
-
 app.use('/api', router);
 
 app.listen(8888);
