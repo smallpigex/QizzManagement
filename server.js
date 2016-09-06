@@ -65,5 +65,5 @@ router.get('/oauth2callback', function (req, res) {
 });
 app.use('/api', router);
 
-app.listen(8888);
+app.listen(process.env.PORT || 8888);
 console.log("Server has started.");
