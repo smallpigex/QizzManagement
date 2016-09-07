@@ -28,7 +28,7 @@ export default class QuestionList extends React.Component {
     console.log(this.state);
     console.log(JSON.stringify(row));
     $.ajax({
-      url: 'http://localhost:8888/api/add',
+      url: '/api/add',
       method: 'POST',
       contentType: 'application/json; charset=utf-8',
       dataType: 'json',
@@ -47,7 +47,7 @@ export default class QuestionList extends React.Component {
   
   getQuestions() {
     $.ajax({
-      url: 'http://localhost:8888/api/questions',
+      url: '/api/questions',
       dataType: 'json',
       cache: false,
       success: function(questions) {

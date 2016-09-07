@@ -27,9 +27,6 @@ router.get('/', function (req, res) {
 });
 
 router.get('/questions', function (req, res) {
-  res.set('Access-Control-Allow-Origin', 'http://localhost:7070');
-  res.set('Access-Control-Allow-Methods', 'GET');
-  res.set('Access-Control-Allow-Headers', 'X-Requested-With, Content-Type, Accept');
   var questionId = req.params.questionId;
   var question = {};
   if(!!questionId) {
@@ -42,9 +39,6 @@ router.get('/questions', function (req, res) {
 });
 
 router.post('/add', function (req, res) {
-  res.set('Access-Control-Allow-Origin', '*');
-  res.set('Access-Control-Allow-Methods', 'POST');
-  res.set('Access-Control-Allow-Headers', 'Content-type,Accept,X-Custom-Header');
   console.log(req.body);
   var service = new QuestionService();
   service.add(req.body, function(data) {
