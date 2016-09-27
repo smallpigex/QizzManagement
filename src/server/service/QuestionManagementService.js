@@ -1,65 +1,82 @@
 /**
  * Created by smallpigex on 2016/7/23.
  */
+
 const Question = require('../model/Question.js');
-const assert = require('assert');
 
-var QuestionManagementService = function() {
+module.exports = class QuestionManagementService {
+  constructor() {
+    this.resultSet = {
+      result: false,
+      message: 'success'
+    };
+  }
 
-  this.add = function(data, callback) {
-     var result = {
-       message: 'success'
-     };
+  add(data, callback) {
+    if (!data._id) {
+      delete data._id;
+    }
 
-     if(!data._id) {
-       delete data._id;
-     }
+    if (this.validation(data)) {
+      const aQuestion = new Question(data);
+      const that = this;
+      aQuestion.save(function storeData(err) {
+        if (err) {
+          this.processError(err, callback);
+        }
+        that.resultSet.result = true;
+        that.resultSet.message = 'The question was added.';
+        that.findLatestQuestion(that.resultSet, callback);
+      });
+    }
+  }
 
-     if(validation(data)) {
-       console.log(data);
-       var aQuestion = new Question(data);
-       console.log(aQuestion);
-       aQuestion.save(function (err) {
-         if(err) {
-          processError(err, callback);
-         }
-         callback(result);
-       });
-       
-     }
-  };
-
-  this.findQuestion = function (data, callback) {
+  findQuestion(data, callback) {
     Question.find(data, (err, questions) => {
-      if(err) {
-        processError(err, callback);
+      if (err) {
+        this.processError(err, callback);
       }
       if (questions) {
         callback(JSON.stringify(questions));
       }
     });
-  };
-  
-  var validation = function (data) {
-    for(var prop in data) {
+  }
+
+  findLatestQuestion(resultSet, callback) {
+    const that = this;
+    Question.findOne({}).sort({ 'createdAt': -1 }).exec((err, lastedQuestion) => {
+      that.resultSet.question = lastedQuestion;
+      callback(resultSet);
+    });
+  }
+
+  delete(data, callback) {
+    const that = this;
+    Question.remove({_id: data._id}, function(err) {
+      if(err) {
+        that.processError(err, callback);
+      }
+      that.resultSet.result = true;
+      that.resultSet.message = 'The question was deleted.';
+      callback(that.resultSet);
+    });
+  }
+
+  validation (data) {
+    for (var prop in data) {
       if(data.hasOwnProperty(prop)) {
         if(!data[prop]) {
-          console.log(data[prop]);
           return false;
         }
       }
     }
     return true;
-  };
-
-  var processError = function (err, callback) {
-    var result = {
-      message: 'Something was error.'
-    };
-    console.error(err);
-    callback(result);
   }
 
-};
-
-module.exports = QuestionManagementService;
+  processError(err, callback) {
+    var resultSet = {
+      message: 'Something was error.'
+    };
+    callback(resultSet);
+  }
+}

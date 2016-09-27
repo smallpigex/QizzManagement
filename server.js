@@ -3,17 +3,14 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const auth = require('./src/server/auth.js');
-const multer = require('multer');
 const app = express();
 const path = require('path');
-const Question = require('./src/server/model/Question.js');
 const QuestionService = require('./src/server/service/QuestionManagementService.js');
 
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({extended: true}));
+app.use(bodyParser.urlencoded( { extended: true } ));
 
 app.use(function (err, req, res, next) {
-  console.error(err);
   res.status(500).send("Something broke!");
 });
 
@@ -21,34 +18,39 @@ app.use(express.static(__dirname + '/public'));
 
 var router = express.Router();
 
+function sendToClinet(data) {
+  this.send(data);
+}
+
 router.get('/', function (req, res) {
-  console.log('');
   res.sendFile(path.join(__dirname, 'index.html'));
 });
 
 router.get('/questions', function (req, res) {
-  var questionId = req.params.questionId;
-  var question = {};
-  if(!!questionId) {
-    question = {id: questionId};
+  const questionId = req.params.questionId;
+  let question = {};
+  const isOk = !!questionId;
+  if (isOk) {
+    question = { id: questionId };
   }
-  var service = new QuestionService();
-  service.findQuestion(question, function(data) {
-    res.send(data);
-  });
+  const service = new QuestionService();
+  service.findQuestion(question, sendToClinet.bind(res));
 });
 
 router.post('/add', function (req, res) {
-  console.log(req.body);
-  var service = new QuestionService();
-  service.add(req.body, function(data) {
-    res.send(data);
-  });
-
+  const service = new QuestionService();
+  service.add(req.body, sendToClinet.bind(res));
 });
 
+router.delete('/delete', function(req, res) {
+  const service = new QuestionService();
+  service.delete(req.body, sendToClinet.bind(res));
+})
+
+
+
 router.get('/googleLogin', function (req, res) {
-  var url = auth.getGoogleLoginUrl();
+  const url = auth.getGoogleLoginUrl();
   res.redirect(url);
 });
 
@@ -57,6 +59,7 @@ router.get('/oauth2callback', function (req, res) {
   auth.getAccessToken(code);
   res.sendFile(path.join(__dirname, 'index.html'));
 });
+
 app.use('/api', router);
 
 app.listen(process.env.PORT || 8888);
